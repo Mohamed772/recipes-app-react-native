@@ -37,7 +37,7 @@ jobs:
         export PATH="$HOME/.yarn/bin:$PATH"
 
     - name: install Jest
-      run: | yarn global add jest
+      run: yarn global add jest
 
     - name: Install Expo CLI
       run: yarn global add expo-cli
