@@ -30,7 +30,6 @@ jobs:
     - name: Env Variable
       run: env
 
-
     - name: Install Yarn
       run: |
         curl -o- -L https://yarnpkg.com/install.sh | bash
@@ -64,7 +63,7 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-expo-
           
-          - name: Run Tests
+    - name: Run Tests
       run: yarn test
       
     - name: Start Expo
