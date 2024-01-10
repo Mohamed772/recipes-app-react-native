@@ -30,6 +30,9 @@ jobs:
     - name: Env Variable
       run: env
 
+    - name: install Jest
+      run: | yarn global add jest
+
     - name: Install Yarn
       run: |
         curl -o- -L https://yarnpkg.com/install.sh | bash
@@ -37,7 +40,7 @@ jobs:
 
     - name: Install Expo CLI
       run: yarn global add expo-cli
-
+s
     - name: Install Dependencies
       run: yarn install |
     - name: Cache Yarn dependencies
