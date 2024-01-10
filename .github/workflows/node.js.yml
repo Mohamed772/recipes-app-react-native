@@ -1,7 +1,9 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code,
+# and run tests across different versions of node.
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
 name: Node.js CI
+
 on:
   push:
     branches: ["DEV"]
@@ -15,59 +17,59 @@ jobs:
 
     strategy:
       matrix:
-        node-version: '20.10.0'
+        node-version: ['14', '16', '18']
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4.0.1
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4.0.1
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
 
-    - name: Env Variable
-      run: env
+      - name: Env Variable
+        run: env
 
-    - name: Install Yarn
-      run: |
-        curl -o- -L https://yarnpkg.com/install.sh | bash
-        export PATH="$HOME/.yarn/bin:$PATH"
+      - name: Install Yarn
+        run: |
+          curl -o- -L https://yarnpkg.com/install.sh | bash
+          export PATH="$HOME/.yarn/bin:$PATH"
 
-    - name: install Jest
-      run: yarn global add jest
+      - name: Install Jest
+        run: yarn global add jest
 
-    - name: Install Expo CLI
-      run: yarn global add expo-cli
-      
-    - name: Install Dependencies
-      run: yarn install |
+      - name: Install Expo CLI
+        run: yarn global add expo-cli
 
-    - name: Cache Yarn dependencies
-      uses: actions/cache@v2
-      with:
-        path: |
-          ~/.yarn
-          ~/path/to/your/project/node_modules
-        key: ${{ runner.os }}-yarn-${{ hashFiles('**/*.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-yarn-
+      - name: Install Dependencies
+        run: yarn install
 
-    - name: Cache Expo dependencies
-      uses: actions/cache@v2
-      with:
-        path: |
-          ~/.expo
-        key: ${{ runner.os }}-expo-${{ hashFiles('**/expo-cli.yaml') }}
-        restore-keys: |
-          ${{ runner.os }}-expo-
-          
-    - name: Run Tests
-      run: yarn test
-      
-    - name: Start Expo
-      run: yarn expo start
+      - name: Cache Yarn dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.yarn
+            path/to/your/project/node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/*.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
 
-    - name: Wait for Expo to start
-      run: npx wait-on http://localhost:19002/
+      - name: Cache Expo dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.expo
+          key: ${{ runner.os }}-expo-${{ hashFiles('**/expo-cli.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-expo-
+
+      - name: Run Tests
+        run: yarn test
+
+      - name: Start Expo
+        run: yarn expo start
+
+      - name: Wait for Expo to start
+        run: npx wait-on http://localhost:19002/
