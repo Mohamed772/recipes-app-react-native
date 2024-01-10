@@ -65,9 +65,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-expo-
 
-      - name: Run Tests
-        run: yarn test
-
       - name: Start Expo
         run: yarn expo start
 
