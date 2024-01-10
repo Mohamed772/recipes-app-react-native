@@ -41,10 +41,11 @@ jobs:
 
     - name: Install Expo CLI
       run: yarn global add expo-cli
-s
+      
     - name: Install Dependencies
       run: yarn install |
-    - name: Cache Yarn dependencies
+    - 
+    name: Cache Yarn dependencies
       uses: actions/cache@v2
       with:
         path: |
