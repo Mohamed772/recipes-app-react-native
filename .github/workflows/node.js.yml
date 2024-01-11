@@ -9,63 +9,31 @@ on:
     branches: ["DEV"]
   pull_request:
     branches: ["DEV"]
-
 jobs:
-  build:
+  preview:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: ['18','20']
-
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+      - name: 🏗 Setup repo
+        uses: actions/checkout@v3
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4.0.1
+      - name: 🏗 Setup Node
+        uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+          node-version: 18.x
+          cache: yarn
 
-      - name: Env Variable
-        run: env
+      - name: 🏗 Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
 
-      - name: Install Yarn
-        run: |
-          curl -o- -L https://yarnpkg.com/install.sh | bash
-          export PATH="$HOME/.yarn/bin:$PATH"
-
-      - name: Install Jest
-        run: yarn global add jest
-
-      - name: Install Expo CLI
-        run: yarn global add expo-cli
-
-      - name: Install Dependencies
+      - name: 📦 Install dependencies
         run: yarn install
 
-      - name: Cache Yarn dependencies
-        uses: actions/cache@v2
+      - name: 🚀 Create preview
+        uses: expo/expo-github-action/preview@v8
         with:
-          path: |
-            ~/.yarn
-            path/to/your/project/node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/*.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-
-      - name: Cache Expo dependencies
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.expo
-          key: ${{ runner.os }}-expo-${{ hashFiles('**/expo-cli.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-expo-
-
-      - name: Start Expo
-        run: yarn expo start
-
-      - name: Wait for Expo to start
-        run: npx wait-on http://localhost:19002/
+          # `github.event.pull_request.head.ref` is only available on `pull_request` triggers.
+          # Use your own, or keep the automatically infered branch name from `--auto`, when using different triggers.
+          command: eas update --auto --branch ${{ github.event.pull_request.head.ref }}
