@@ -1,3 +1,22 @@
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyDRxP5Fm9K9Rn2127SkPdvxBwsQZdn8f08",
+  authDomain: "recipes-app-react-1d6d9.firebaseapp.com",
+  databaseURL: "https://recipes-app-react-1d6d9-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "recipes-app-react-1d6d9",
+  storageBucket: "recipes-app-react-1d6d9.appspot.com",
+  messagingSenderId: "1011116118001",
+  appId: "1:1011116118001:web:3f0b1be7bd16bcc001be50"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
 export const categories = [
   {
     id: 3,

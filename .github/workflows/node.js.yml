@@ -12,12 +12,11 @@ on:
 
 jobs:
   build:
-
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: ['14', '16', '18']
+        node-version: ['18','20']
 
     steps:
       - name: Checkout Repository
